@@ -1,0 +1,449 @@
+some important dependencies
+=================================
+
+npm install  @thalesness/react-native-canvas-scratch-card
+react-native-modals
+react-native-pipesort-component
+react-native-qrcode-scanner-view
+react-native-scratch-card
+react-native-scratch-view
+react-native-search-filter
+react-native-swiper
+react-native-camera
+react-native
+react-native-shared-element
+react-native-circular-progress
+react-native-svg 
+ react-native-maps 
+ hex-to-rgba
+
+                                       
+
+https://github.com/ImranHishaam/react-native-redux-counter-app/blob/master/App/Reducers/CounterReducer.js
+
+##================API key ===========
+
+  AIzaSyCzV5DaQ_pTjVD9jsSR64ju3W00x6fcFXo
+
+================================================
+
+const Tabs = createBottomNavigators();
+ 
+
+const MyTabs = () => {
+  return (
+              <Tabs.Navigator 
+                      screenOptions ={{
+                        tabBarLable:"Test"
+                      }} 
+
+                      tabBarOptions ={{
+                              activeTintColor ="red",
+                              activeBackgroundColor ="blue"
+                      }}
+
+              >
+              <Tabs.Screen 
+                          name ="component label"
+                          Component ={Component}
+                          options ={{
+                            tabBarIcon: props => (
+                              <Ionicons name ="ios-contacts" size ={props.size} color ={props.color}/>
+                            )
+                          }}
+                                />
+              </Tabs.Navigator>
+            
+             
+  )
+}
+
+
+================================Drawer=========================
+
+const AppDrawer = createDrawerNavigator();
+
+const AppDrawerScreen = () => {
+    return (
+              <AppDrawer.Navigator  drawerType ="slide" drawerPosition ="right">
+                <AppDrawer.Screen 
+                  name ="Tabs"
+                  Component ={component}
+                  options ={{drawerLabel ="Home"}}
+                />
+                <AppDrawer.Screen 
+                  name ="Settings"
+                  Component ={component}
+                  options ={{
+                     gestureEnabled =false
+                }}
+
+
+                />
+              </AppDrawer.Navigator>
+
+    )
+}
+
+
+=========================Basic Authentication=================
+
+const AuthStack = createStackNavigator();
+
+const AuthStackScreen = () => {
+  return (
+          <AuthStack.Navigator>
+            <AuthStack.Screen name ="SignIn" component ={SignInScreen}/>
+            <AuthStack.Screen name ="SignUp" component ={SignUpScreen}/>
+          </AuthStack.Navigator>
+  )
+}
+
+
+export default () => {
+  const [loading,setLoading]= useState(true)
+   const [user,setUser] =useState(null) 
+React.useEffect(()=>{
+  setTimeout(()=>{
+    setLoading(!loading)
+    setUser({})
+  },500)
+},[])
+
+
+   return (
+            <NavigationContainer>
+              { loading ? <LoadingScreen/> : user ? <AppDrawer/> : <AuthStackScreen/> }
+            </NavigationContainer>
+        
+   )
+}
+
+===================================Registration with api ==============================
+
+
+class Reg extends Component {
+
+
+  constructor() {
+
+    super();
+
+
+    this.state = {
+
+      EmployeeName: '',
+
+      City: '',
+
+      Email: '',
+
+      Password: '',
+      Department: ''
+
+    }
+
+
+    this.Email = this.Email.bind(this);
+
+    this.Password = this.Password.bind(this);
+    this.EmployeeName = this.EmployeeName.bind(this);
+
+    this.Password = this.Password.bind(this);
+    this.Department = this.Department.bind(this);
+    this.City = this.City.bind(this);
+    this.register = this.register.bind(this);
+
+  }
+
+  Email(event) {
+
+    this.setState({ Email: event.target.value })
+
+  }
+
+
+  
+Department(event) {
+
+    this.setState({ Department: event.target.value })
+
+  }
+
+  Password(event) {
+
+    this.setState({ Password: event.target.value })
+
+  }
+
+  City(event) {
+
+    this.setState({ City: event.target.value })
+
+  }
+43
+  EmployeeName(event) {
+
+    this.setState({ EmployeeName: event.target.value })
+
+  }
+
+  register(event) {
+
+
+    fetch('http://localhost:51282/Api/login/InsertEmployee', {
+
+      method: 'post',
+
+      headers: {
+
+        'Accept': 'application/json',
+
+        'Content-Type': 'application/json'
+
+      },
+      body: JSON.stringify({
+
+
+
+        EmployeeName: this.state.EmployeeName,
+       Password: this.state.Password,
+
+        Email: this.state.Email,
+
+        City: this.state.City,
+
+        Department: this.state.Department
+
+      })
+
+    }).then((Response) => Response.json())
+
+      .then((Result) => {
+
+        if (Result.Status == 'Success')
+
+                this.props.history.push("/Dashboard");
+
+        else
+
+          alert('Sorrrrrry !!!! Un-authenticated User !!!!!')
+
+      })
+
+  }
+
+===================================Login with api ====================
+
+class Login extends Component {
+5
+    constructor() {
+6
+        super();
+7
+8
+        this.state = {
+9
+            Email: '',
+10
+            Password: ''
+11
+        }
+12
+13
+        this.Password = this.Password.bind(this);
+14
+        this.Email = this.Email.bind(this);
+15
+        this.login = this.login.bind(this);
+16
+    }
+17
+18
+    Email(event) {
+19
+        this.setState({ Email: event.target.value })
+20
+    }
+21
+    Password(event) {
+22
+        this.setState({ Password: event.target.value })
+23
+    }
+24
+    login(event) {
+25
+        debugger;
+26
+        fetch('http://localhost:51282/Api/login/Login', {
+27
+            method: 'post',
+28
+            headers: {
+29
+                'Accept': 'application/json',
+30
+                'Content-Type': 'application/json'
+31
+            },
+32
+            body: JSON.stringify({
+33
+                Email: this.state.Email,
+34
+                Password: this.state.Password
+35
+            })
+36
+        }).then((Response) => Response.json())
+37
+            .then((result) => {
+38
+                console.log(result);
+39
+                if (result.Status == 'Invalid')
+40
+                    alert('Invalid User');
+41
+                else
+42
+                    this.props.history.push("/Dashboard");
+43
+            })
+44
+    }
+45
+
+
+===========================================Modal======================
+
+<Modal
+                  isVisible={this.state.modalVisible}
+                  animationIn="fadeInUp"
+                  animationOut="fadeOutDown"
+                  backdropOpacity={.5}
+                  onBackdropPress={() => this.setState({ modalVisible: false })}
+                  onBackButtonPress={() => this.setState({ modalVisible: false })}
+                  style={styles.bottomModal}
+                  useNativeDriver={true}
+       
+
+
+         >
+
+
+========================================Stack Navigator======================
+
+<Stack.Navigator
+        initialRouteName='Home'
+        screenOptions={{
+          gestureEnabled: true
+        }}>
+
+
+How to use params in the screen’s title
+---------------------------------------------
+
+<Stack.Screen
+  name='Detail'
+  component={Detail}
+  options={({ route }) => ({
+    title: route.params.item.name
+  })}
+/>
+
+
+Making the back button title invisible on iOS
+---------------------------------------------------
+
+<Stack.Navigator
+  initialRouteName='Home'
+  screenOptions={{
+    gestureEnabled: true,
+    headerStyle: {
+      backgroundColor: '#101010'
+    },
+    headerTitleStyle: {
+      fontWeight: 'bold'
+    },
+    headerTintColor: '#ffd700',
+    headerBackTitleVisible: false
+  }}>
+  {/* ... */}
+</Stack.Navigator>
+
+
+Understanding header modes and changing them in the Android app
+-------------------------------------------------------------------
+
+<Stack.Navigator
+  initialRouteName='Home'
+  screenOptions={{
+    gestureEnabled: true,
+    headerStyle: {
+      backgroundColor: '#101010'
+    },
+    headerTitleStyle: {
+      fontWeight: 'bold'
+    },
+    headerTintColor: '#ffd700',
+    headerBackTitleVisible: false
+  }}
+  headerMode='float'>
+  {/* ... */}
+</Stack.Navigator>
+
+Directly navigating from the third screen to the top of the stack screen navigator
+--------------------------------------------------------------------------------------
+However, using the helper method navigation.popToTop() without any arguments, you can navigate from the Settings screen to the Home screen directly.
+To accomplish this, modify the Settings.js file as shown below by adding a button. The onPress of this button is going to make use of the helper method.
+
+=================================================
+
+Changing the default storage limitation on Android
+========================================================
+On iOS devices, the AsyncStorage is not limited programmatically.
+
+On Android devices, the current AsyncStorage size is set to 6MB by default. Reaching this limit is going to result in errors like database or disk is full. There are valid reasons why this limit exists but if there is a need to increase the size, you can do that. Open the android/gradle.properties file and add the following:
+
+android.useAndroidX=true
+android.enableJetifier=true
+// add the below line
+AsyncStorage_db_size_in_MB=10
+
+
+/// ================== facebook Ap id ======
+7417043805
+Twinkle1994
+
+AppID :261527841843738
+AppSecret:851c5f7ac2147eda70865bfac4c781e8
+
+keytool -exportcert -alias androiddebugkey -keystore C:/Users/Rajneesh/BigMart/android/app/debug.keystore | C:\bin\openssl.exe  sha1 -binary | C:\bin\openssl.exe base64
+
+hashkey => YDefsklKxCQktjMARmIGbp8miDU=
+
+
+Google Signin
+================
+
+
+Open the command prompt and enter this command cd C:\Program Files\Java\jdk1.8.0_251\bin and navigate to this folder.
+
+
+After that enter keytool -list -v -keystore C:/Users/Rajneesh/BigMart/android/app/debug.keystore -alias androiddebugkey -storepass android -keypass android and you will get SHA1 configuration like below image.
+
+
+keytool -list -v -keystore C:/Users/Rajneesh/BigMart/android/app/debug.keystore -alias androiddebugkey -storepass android -keypass android
+
+ // multiDexEnabled true
+
+
+===========================some important github repos========================
+
+1)github.com/florinpop17/app-ideas
+2)github.com/EbookFoundation/free-programming-books
+3)github.com/public-apis/public-apis
+4)github.com/getify/You-Dont-Know-JS
+5)
